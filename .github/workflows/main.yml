@@ -1,4 +1,3 @@
-
 name: Build and Release
 
 on:
@@ -29,19 +28,13 @@ jobs:
         # Add any other dependencies required by your project here
 
     - name: Change to engine directory
-      run: cd engine
-
-    - name: Run make sync
+      working-directory: engine
       run: |
-        cd engine
+        # Run make sync
         make sync
-
-    - name: Run make
-      run: |
-        cd engine
+        
+        # Run make
         make
-
-    - name: Run make release
-      run: |
-        cd engine
+        
+        # Run make release
         make release
