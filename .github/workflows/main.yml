@@ -24,13 +24,15 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install fontconfig cmake clang pkg-config llvm python3-pip libglvnd-dev
+        sudo apt-get install  cmake clang llvm libglvnd-dev
+        ls
         # Add any other dependencies required by your project here
 
     - name: Change to engine directory
       working-directory: engine
       run: |
         # Run make sync
+        ls
         make sync
         
         # Run make
