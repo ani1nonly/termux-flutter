@@ -25,6 +25,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y make
+        sudo apt-get install gtk3 fontconfig xorgproto ninja cmake clang pkg-config llvm python3 python-pip libglvnd-dev
         # Add any other dependencies required by your project here
 
     - name: Change to engine directory
