@@ -1,1 +1,47 @@
 
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y make
+        # Add any other dependencies required by your project here
+
+    - name: Change to engine directory
+      run: cd engine
+
+    - name: Run make sync
+      run: |
+        cd engine
+        make sync
+
+    - name: Run make
+      run: |
+        cd engine
+        make
+
+    - name: Run make release
+      run: |
+        cd engine
+        make release
