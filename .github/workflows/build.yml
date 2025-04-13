@@ -1,0 +1,38 @@
+name: build
+
+on:
+  workflow_dispatch:
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+
+    - name: install deps
+      run: sudo apt update && sudo apt install libfreetype-dev ninja-build -y
+
+    - name: setup depot-tools
+      uses: newkdev/setup-depot-tools@v1.0.1
+
+    - name: install python requirements
+      run: pip install -r requirements.txt
+
+    - name: build
+      run: python build.py
+
+    - name: parse tag
+      id: parser
+      run: |
+        TAG=$(NO_RECORD=1 python build.py tag)
+        echo "TAG=$TAG" >> $GITHUB_OUTPUT
+        echo "TITLE=Flutter $TAG" >> $GITHUB_OUTPUT
+
+    - name: release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.parser.outputs.TAG }}
+        name: ${{ steps.parse_toml.outputs.TITLE }}
+        files: '**/*.deb'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
